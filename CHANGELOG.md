@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- Correct lower-bound signs in dense primal infeasibility certificates for general inequalities and box constraints.
+
 ## [0.8.3] - 2026-11-12
 
 ### Fixed

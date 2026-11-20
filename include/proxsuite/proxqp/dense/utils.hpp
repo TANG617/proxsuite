@@ -297,18 +297,16 @@ global_primal_residual_infeasibility(
   ruiz.unscale_dual_residual_in_place(CTdz);
   T lower_bound_1 = dy.to_eigen().dot(qpwork.b_scaled) +
                     helpers::positive_part(dz.to_eigen().head(qpmodel.n_in))
-                      .dot(qpwork.u_scaled) -
+                      .dot(qpwork.u_scaled) +
                     helpers::negative_part(dz.to_eigen().head(qpmodel.n_in))
                       .dot(qpwork.l_scaled);
   ruiz.unscale_dual_in_place_eq(dy);
   ruiz.unscale_dual_in_place_in(
     VectorViewMut<T>{ from_eigen, dz.to_eigen().head(qpmodel.n_in) });
   if (box_constraints) {
-    // in_inf+=
-    // helpers::positive_part(dz.to_eigen().tail(qpmodel.dim)).dot(qpmodel.u) -
-    //          helpers::negative_part(dz.to_eigen().tail(qpmodel.dim)).dot(qpmodel.l);
+    // negative_part already carries the sign of the lower-bound multiplier.
     lower_bound_1 += helpers::positive_part(dz.to_eigen().tail(qpmodel.dim))
-                       .dot(qpwork.u_box_scaled) -
+                       .dot(qpwork.u_box_scaled) +
                      helpers::negative_part(dz.to_eigen().tail(qpmodel.dim))
                        .dot(qpwork.l_box_scaled);
     ruiz.unscale_box_dual_in_place_in(
